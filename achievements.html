@@ -1,3 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nutzu | Achievements</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>RXE Nutzu?</h2>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="leaderboards.html">Leaderboards</a></li>
+        <li><a href="achievements.html">Achievements</a></li>
+    </ul>
+</nav>
+
 <section>
     <h1>Achievements</h1>
 
@@ -8,14 +26,13 @@
 function loadAchievements() {
     const container = document.getElementById("achievementsContainer");
 
-    // Default achievements (first time only)
     let achievements = JSON.parse(localStorage.getItem("achievements"));
-
     if (!achievements) {
         achievements = [
             "50x Total Banner",
             "20x Champion",
-            "10x Finals X MVP"
+            "10x Finals X MVP",
+            "SUP KA cELINE"
         ];
         localStorage.setItem("achievements", JSON.stringify(achievements));
     }
@@ -24,7 +41,7 @@ function loadAchievements() {
 
     achievements.forEach(a => {
         const div = document.createElement("div");
-        div.className = "badge";
+        div.className = "badge";  // THIS applies your badge CSS
         div.innerText = a;
         container.appendChild(div);
     });
@@ -32,3 +49,6 @@ function loadAchievements() {
 
 loadAchievements();
 </script>
+
+</body>
+</html>
