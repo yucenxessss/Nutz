@@ -89,7 +89,7 @@ tr:hover {
 .badge {
     display: inline-block;
     margin: 15px;
-    padding: 15px 30px;
+    padding: 15px 25px;
     font-size: 1.1rem;
     font-weight: bold;
     color: white;
@@ -100,16 +100,7 @@ tr:hover {
     cursor: default;
 }
 
-/* Hover effect for badges */
 .badge:hover {
     transform: scale(1.2) rotate(-2deg);
     box-shadow: 0 0 20px #6a00ff, 0 0 40px #00f0ff;
-}
-
-/* Optional: make badges wrap on smaller screens */
-#achievementsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
 }
