@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel | Nutzu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section>
+    <h1>🔒 Admin Panel</h1>
+
+    <div id="loginBox">
+        <input type="password" id="password" placeholder="Enter Admin Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="adminContent" style="display:none;">
+        <h2>Add Achievement</h2>
+        <input type="text" id="newAchievement" placeholder="New achievement">
+        <button onclick="addAchievement()">Add</button>
+
+        <h2>Current Achievements</h2>
+        <ul id="achievementList"></ul>
+    </div>
+</section>
+
+<script>
+const ADMIN_PASSWORD = "1234"; // change this!
+
+function login() {
+    const pass = document.getElementById("password").value;
+    if (pass === ADMIN_PASSWORD) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+        loadAchievements();
+    } else {
+        alert("Wrong password");
+    }
+}
+
+function loadAchievements() {
+    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
+    const list = document.getElementById("achievementList");
+    list.innerHTML = "";
+
+    achievements.forEach((a, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = a + ' <button onclick="deleteAchievement(' + index + ')">❌</button>';
+        list.appendChild(li);
+    });
+}
+
+function addAchievement() {
+    const input = document.getElementById("newAchievement");
+    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
+    achievements.push(input.value);
+    localStorage.setItem("achievements", JSON.stringify(achievements));
+    input.value = "";
+    loadAchievements();
+}
+
+function deleteAchievement(index) {
+    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
+    achievements.splice(index, 1);
+    localStorage.setItem("achievements", JSON.stringify(achievements));
+    loadAchievements();
+}
+</script>
+
+</body>
+</html>
