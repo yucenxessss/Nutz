@@ -20,7 +20,6 @@
 
         <!-- ACHIEVEMENTS SECTION -->
         <h2>Add Achievement</h2>
-
         <input type="text" id="title" placeholder="Achievement Title">
         <input type="file" id="imageInput" accept="image/*">
         <button onclick="addAchievement()">Add Achievement</button>
@@ -32,7 +31,6 @@
 
         <!-- LEADERBOARD SECTION -->
         <h2>Add Leaderboard</h2>
-
         <input type="text" id="lbGame" placeholder="Game / Mode">
         <input type="text" id="lbRank" placeholder="Rank (ex: Legendary)">
         <input type="file" id="lbImageInput" accept="image/*">
@@ -45,7 +43,6 @@
 </section>
 
 <script>
-
 const ADMIN_PASSWORD = "Nutz";
 
 /* LOGIN */
@@ -61,10 +58,7 @@ function login() {
     }
 }
 
-/* ===================== */
-/* ACHIEVEMENTS SECTION  */
-/* ===================== */
-
+/* ACHIEVEMENTS */
 function addAchievement() {
     const title = document.getElementById("title").value;
     const file = document.getElementById("imageInput").files[0];
@@ -77,29 +71,20 @@ function addAchievement() {
     const reader = new FileReader();
     reader.onload = function(e) {
         const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-
-        achievements.push({
-            title: title,
-            image: e.target.result
-        });
-
+        achievements.push({ title: title, image: e.target.result });
         localStorage.setItem("achievements", JSON.stringify(achievements));
 
         document.getElementById("title").value = "";
         document.getElementById("imageInput").value = "";
-
         loadAdmin();
     };
-
     reader.readAsDataURL(file);
 }
 
 function loadAdmin() {
     const container = document.getElementById("adminList");
     const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-
     container.innerHTML = "";
-
     achievements.forEach((a, index) => {
         const div = document.createElement("div");
         div.innerHTML = `
@@ -119,10 +104,7 @@ function deleteAchievement(index) {
     loadAdmin();
 }
 
-/* ===================== */
-/* LEADERBOARDS SECTION  */
-/* ===================== */
-
+/* LEADERBOARDS */
 function addLeaderboard() {
     const game = document.getElementById("lbGame").value;
     const rank = document.getElementById("lbRank").value;
@@ -136,31 +118,21 @@ function addLeaderboard() {
     const reader = new FileReader();
     reader.onload = function(e) {
         const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
-
-        leaderboards.push({
-            game: game,
-            rank: rank,
-            image: e.target.result
-        });
-
+        leaderboards.push({ game: game, rank: rank, image: e.target.result });
         localStorage.setItem("leaderboards", JSON.stringify(leaderboards));
 
         document.getElementById("lbGame").value = "";
         document.getElementById("lbRank").value = "";
         document.getElementById("lbImageInput").value = "";
-
         loadLeaderboardsAdmin();
     };
-
     reader.readAsDataURL(file);
 }
 
 function loadLeaderboardsAdmin() {
     const container = document.getElementById("leaderboardList");
     const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
-
     container.innerHTML = "";
-
     leaderboards.forEach((lb, index) => {
         const div = document.createElement("div");
         div.innerHTML = `
@@ -179,7 +151,6 @@ function deleteLeaderboard(index) {
     localStorage.setItem("leaderboards", JSON.stringify(leaderboards));
     loadLeaderboardsAdmin();
 }
-
 </script>
 
 </body>
