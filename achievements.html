@@ -1,8 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nutzu | Achievements</title>
+    <title>RXE Nutzu? | Achievements</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* iPhone-style small screenshots */
+        #achievementsContainer img {
+            width: 120px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 25px;
+            border: 2px solid #222;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            margin: 10px;
+        }
+
+        #achievementsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .badge p {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        body {
+            background-color: #0f0f1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 40px;
+            background: #111;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: #00f0ff;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 40px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -17,7 +69,7 @@
 </nav>
 
 <section>
-    <h1>Achievements</h1>
+    <h1>🏆 Achievements</h1>
     <div id="achievementsContainer"></div>
 </section>
 
@@ -25,14 +77,13 @@
 function loadAchievements() {
     const container = document.getElementById("achievementsContainer");
     const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-
     container.innerHTML = "";
 
     achievements.forEach(a => {
         const div = document.createElement("div");
-        div.className = "achievement-card";
+        div.className = "badge";
         div.innerHTML = `
-            <img src="${a.image}">
+            <img src="${a.image}" alt="Achievement Screenshot">
             <p>${a.title}</p>
         `;
         container.appendChild(div);
