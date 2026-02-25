@@ -16,54 +16,83 @@
 
     <div id="adminContent" style="display:none;">
         <h2>Add Achievement</h2>
-        <input type="text" id="newAchievement" placeholder="New achievement">
-        <button onclick="addAchievement()">Add</button>
+
+        <input type="text" id="title" placeholder="Achievement Title">
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="addAchievement()">Add Achievement</button>
 
         <h2>Current Achievements</h2>
-        <ul id="achievementList"></ul>
+        <div id="adminList"></div>
     </div>
 </section>
 
 <script>
-const ADMIN_PASSWORD = "1234"; // change this!
+const ADMIN_PASSWORD = "Nutz";
 
 function login() {
     const pass = document.getElementById("password").value;
     if (pass === ADMIN_PASSWORD) {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
-        loadAchievements();
+        loadAdmin();
     } else {
         alert("Wrong password");
     }
 }
 
-function loadAchievements() {
-    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-    const list = document.getElementById("achievementList");
-    list.innerHTML = "";
+function addAchievement() {
+    const title = document.getElementById("title").value;
+    const fileInput = document.getElementById("imageInput");
+    const file = fileInput.files[0];
 
-    achievements.forEach((a, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = a + ' <button onclick="deleteAchievement(' + index + ')">❌</button>';
-        list.appendChild(li);
-    });
+    if (!file || !title) {
+        alert("Add title and image");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
+
+        achievements.push({
+            title: title,
+            image: e.target.result
+        });
+
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+
+        document.getElementById("title").value = "";
+        fileInput.value = "";
+        loadAdmin();
+    };
+
+    reader.readAsDataURL(file);
 }
 
-function addAchievement() {
-    const input = document.getElementById("newAchievement");
+function loadAdmin() {
+    const container = document.getElementById("adminList");
     const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
-    achievements.push(input.value);
-    localStorage.setItem("achievements", JSON.stringify(achievements));
-    input.value = "";
-    loadAchievements();
+
+    container.innerHTML = "";
+
+    achievements.forEach((a, index) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <img src="${a.image}" width="80"><br>
+            ${a.title}
+            <br>
+            <button onclick="deleteAchievement(${index})">Delete</button>
+            <hr>
+        `;
+        container.appendChild(div);
+    });
 }
 
 function deleteAchievement(index) {
     const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
     achievements.splice(index, 1);
     localStorage.setItem("achievements", JSON.stringify(achievements));
-    loadAchievements();
+    loadAdmin();
 }
 </script>
 
