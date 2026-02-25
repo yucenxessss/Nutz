@@ -18,31 +18,23 @@
 
 <section>
     <h1>Achievements</h1>
-
     <div id="achievementsContainer"></div>
 </section>
 
 <script>
 function loadAchievements() {
     const container = document.getElementById("achievementsContainer");
-
-    let achievements = JSON.parse(localStorage.getItem("achievements"));
-    if (!achievements) {
-        achievements = [
-            "50x Total Banner",
-            "20x Champion",
-            "10x Finals X MVP",
-            "SUP KA cELINE"
-        ];
-        localStorage.setItem("achievements", JSON.stringify(achievements));
-    }
+    const achievements = JSON.parse(localStorage.getItem("achievements")) || [];
 
     container.innerHTML = "";
 
     achievements.forEach(a => {
         const div = document.createElement("div");
-        div.className = "badge";  // THIS applies your badge CSS
-        div.innerText = a;
+        div.className = "achievement-card";
+        div.innerHTML = `
+            <img src="${a.image}">
+            <p>${a.title}</p>
+        `;
         container.appendChild(div);
     });
 }
