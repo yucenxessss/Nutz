@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>RXE Nutzu? | Leaderboards</title>
+    <title>Nutzu | Leaderboards</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav>
-    <h2>RXE Nutzu?</h2>
+    <h2>🎮 Nutzu</h2>
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Me</a></li>
@@ -16,44 +16,30 @@
     </ul>
 </nav>
 
-<section>
-    <h1>🏆 Call of Duty Mobile (Garena)</h1>
-    <h2>Battle Royale Ranked/Weapon Stats</h2>
+<h1>🏆 Call of Duty Mobile (Garena)</h1>
+<h2>Battle Royale Ranked / Weapon Stats</h2>
+    
+<script>
+function loadLeaderboards() {
+    const container = document.getElementById("leaderboardContainer");
+    const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
 
-    <table>
-        <tr>
-            <th>Series</th>
-            <th>Legendary</th>
-            <th>Points</th>
-            <th>Top 1277</th>
-        </tr>
-        <tr>
-            <td>Series 3 2025</td>
-            <td>Legendary</td>
-            <td>Points 10,520</td>
-            <td>Top 81</td>
-        </tr>
-        <tr>
-            <td>Series 4 2025</td>
-            <td>Legendary</td>
-            <td>Points 10,520</td>
-            <td>Top 81</td>
-        </tr>
-        <tr>
-            <td>Series 6</td>
-            <td>Legendary</td>
-            <td>Points: 10,105</td>
-            <td>Top 4900</td>
-        </tr>
-        <tr>
-            <td>Weapon Master R9-0</td>
-            <td> </td>
-            <td>Points: 6173 </td>
-            <td>Top 5</td>
-        </tr>
-    </table>
+    container.innerHTML = "";
 
-</section>
+    leaderboards.forEach(lb => {
+        const div = document.createElement("div");
+        div.className = "leaderboard-card";
+        div.innerHTML = `
+            <img src="${lb.image}">
+            <h3>${lb.game}</h3>
+            <p><strong>${lb.rank}</strong></p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+loadLeaderboards();
+</script>
 
 </body>
 </html>
