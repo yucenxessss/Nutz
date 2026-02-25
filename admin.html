@@ -9,12 +9,16 @@
 <section>
     <h1>🔒 Admin Panel</h1>
 
+    <!-- LOGIN -->
     <div id="loginBox">
         <input type="password" id="password" placeholder="Enter Admin Password">
         <button onclick="login()">Login</button>
     </div>
 
+    <!-- ADMIN CONTENT -->
     <div id="adminContent" style="display:none;">
+
+        <!-- ACHIEVEMENTS SECTION -->
         <h2>Add Achievement</h2>
 
         <input type="text" id="title" placeholder="Achievement Title">
@@ -23,29 +27,49 @@
 
         <h2>Current Achievements</h2>
         <div id="adminList"></div>
+
+        <hr>
+
+        <!-- LEADERBOARD SECTION -->
+        <h2>Add Leaderboard</h2>
+
+        <input type="text" id="lbGame" placeholder="Game / Mode">
+        <input type="text" id="lbRank" placeholder="Rank (ex: Legendary)">
+        <input type="file" id="lbImageInput" accept="image/*">
+        <button onclick="addLeaderboard()">Add Leaderboard</button>
+
+        <h2>Current Leaderboards</h2>
+        <div id="leaderboardList"></div>
+
     </div>
 </section>
 
 <script>
+
 const ADMIN_PASSWORD = "Nutz";
 
+/* LOGIN */
 function login() {
     const pass = document.getElementById("password").value;
     if (pass === ADMIN_PASSWORD) {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("adminContent").style.display = "block";
         loadAdmin();
+        loadLeaderboardsAdmin();
     } else {
         alert("Wrong password");
     }
 }
 
+/* ===================== */
+/* ACHIEVEMENTS SECTION  */
+/* ===================== */
+
 function addAchievement() {
     const title = document.getElementById("title").value;
-    const fileInput = document.getElementById("imageInput");
-    const file = fileInput.files[0];
+    const file = document.getElementById("imageInput").files[0];
 
-    if (!file || !title) {
+    if (!title || !file) {
         alert("Add title and image");
         return;
     }
@@ -62,7 +86,8 @@ function addAchievement() {
         localStorage.setItem("achievements", JSON.stringify(achievements));
 
         document.getElementById("title").value = "";
-        fileInput.value = "";
+        document.getElementById("imageInput").value = "";
+
         loadAdmin();
     };
 
@@ -79,8 +104,7 @@ function loadAdmin() {
         const div = document.createElement("div");
         div.innerHTML = `
             <img src="${a.image}" width="80"><br>
-            ${a.title}
-            <br>
+            ${a.title}<br>
             <button onclick="deleteAchievement(${index})">Delete</button>
             <hr>
         `;
@@ -94,6 +118,68 @@ function deleteAchievement(index) {
     localStorage.setItem("achievements", JSON.stringify(achievements));
     loadAdmin();
 }
+
+/* ===================== */
+/* LEADERBOARDS SECTION  */
+/* ===================== */
+
+function addLeaderboard() {
+    const game = document.getElementById("lbGame").value;
+    const rank = document.getElementById("lbRank").value;
+    const file = document.getElementById("lbImageInput").files[0];
+
+    if (!game || !rank || !file) {
+        alert("Fill all leaderboard fields");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
+
+        leaderboards.push({
+            game: game,
+            rank: rank,
+            image: e.target.result
+        });
+
+        localStorage.setItem("leaderboards", JSON.stringify(leaderboards));
+
+        document.getElementById("lbGame").value = "";
+        document.getElementById("lbRank").value = "";
+        document.getElementById("lbImageInput").value = "";
+
+        loadLeaderboardsAdmin();
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function loadLeaderboardsAdmin() {
+    const container = document.getElementById("leaderboardList");
+    const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
+
+    container.innerHTML = "";
+
+    leaderboards.forEach((lb, index) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <img src="${lb.image}" width="80"><br>
+            ${lb.game} - ${lb.rank}<br>
+            <button onclick="deleteLeaderboard(${index})">Delete</button>
+            <hr>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function deleteLeaderboard(index) {
+    const leaderboards = JSON.parse(localStorage.getItem("leaderboards")) || [];
+    leaderboards.splice(index, 1);
+    localStorage.setItem("leaderboards", JSON.stringify(leaderboards));
+    loadLeaderboardsAdmin();
+}
+
 </script>
 
 </body>
